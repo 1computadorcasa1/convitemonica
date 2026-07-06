@@ -12,7 +12,7 @@
 
 ### ❤️ Live Demo
 
-👉 **https://1computadorcasa1.github.io/convitemonics/convite.html**
+👉 **https://1computadorcasa1.github.io/convitemonica/convite.html**
 
 </div>
 
