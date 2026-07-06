@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Para ti...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --pink-deep: #e0195f;
+        --pink-main: #ff4d85;
+        --pink-soft: #ffe1ec;
+        --pink-bg-1: #ffc3d8;
+        --pink-bg-2: #ffe9d6;
+        --ink: #4a2035;
+        --ink-soft: #8a6377;
+        --card: #fffdfc;
+        --grey-btn: #eef0f2;
+        --grey-btn-text: #6b7280;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        font-family: 'Quicksand', sans-serif;
+        text-align: center;
+        background: radial-gradient(circle at 20% 15%, var(--pink-bg-2), transparent 55%),
+                    radial-gradient(circle at 80% 85%, var(--pink-bg-1), transparent 55%),
+                    linear-gradient(160deg, #ffb6c1, #ff9bb0 60%, #ff86a8);
+        background-attachment: fixed;
+        position: relative;
+    }
+
+    /* corações e brilhos flutuantes decorativos */
+    .brilho {
+        position: fixed;
+        pointer-events: none;
+        font-size: 18px;
+        opacity: 0.5;
+        animation: flutuar 6s ease-in-out infinite;
+        z-index: 0;
+        user-select: none;
+    }
+    .brilho:nth-child(1) { top: 8%;  left: 10%; animation-delay: 0s; }
+    .brilho:nth-child(2) { top: 20%; right: 12%; animation-delay: 1.3s; font-size: 14px; }
+
+    @keyframes flutuar {
+        0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.35; }
+        50% { transform: translateY(-18px) rotate(8deg); opacity: 0.7; }
+    }
+
+    .coracao {
+        position: fixed;
+        bottom: -10vh;
+        left: var(--x, 50%);
+        font-size: var(--tamanho, 18px);
+        opacity: 0;
+        pointer-events: none;
+        user-select: none;
+        z-index: 0;
+        animation: subir var(--duracao, 10s) linear infinite;
+        animation-delay: var(--atraso, 0s);
+    }
+
+    @keyframes subir {
+        0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+        10%  { opacity: 0.75; }
+        88%  { opacity: 0.55; }
+        100% { transform: translateY(-115vh) translateX(var(--deriva, 24px)) rotate(18deg); opacity: 0; }
+    }
+
+    .caixa {
+        background: var(--card);
+        padding: clamp(24px, 6vw, 36px) clamp(20px, 5vw, 32px);
+        border-radius: 28px;
+        box-shadow: 0 20px 45px rgba(224, 25, 95, 0.22), 0 2px 8px rgba(0,0,0,0.04);
+        width: 100%;
+        max-width: 380px;
+        position: relative;
+        z-index: 1;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid rgba(255,255,255,0.6);
+        animation: entrar 0.45s cubic-bezier(.22,1,.36,1);
+    }
+
+    #ecra-1 { display: flex; }
+
+    @keyframes entrar {
+        from { opacity: 0; transform: translateY(14px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .ilustracao-caixa {
+        width: 100%;
+        max-width: 220px;
+        height: 200px;
+        border-radius: 20px;
+        margin-bottom: 22px;
+        box-shadow: 0 10px 24px rgba(224, 25, 95, 0.28);
+        background: linear-gradient(135deg, var(--pink-soft), #fff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .ilustracao-caixa svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .foto-caixa {
+        padding: 0;
+        overflow: hidden;
+    }
+    .foto-caixa img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 20px;
+    }
+    .emoji-fallback {
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 56px;
+    }
+
+    h1 {
+        color: var(--pink-deep);
+        margin: 0 0 10px;
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 600;
+        font-size: clamp(19px, 5vw, 23px);
+        line-height: 1.35;
+    }
+
+    h2 {
+        color: var(--ink-soft);
+        font-size: clamp(14px, 3.6vw, 16px);
+        font-weight: 500;
+        margin: 0 0 20px;
+    }
+
+    .botoes {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        justify-content: center;
+        width: 100%;
+        margin-top: 6px;
+    }
+
+    button {
+        padding: 15px 22px;
+        font-size: 16px;
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 600;
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        color: white;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+        width: 100%;
+        min-height: 50px;
+        touch-action: manipulation;
+    }
+
+    button:active { transform: scale(0.96); }
+
+    .btn-principal {
+        position: relative;
+        z-index:20;
+        background: linear-gradient(135deg, #ff6b9d, var(--pink-main));
+        box-shadow: 0 8px 18px rgba(255, 77, 133, 0.4);
+    }
+    .btn-principal:hover { box-shadow: 0 10px 22px rgba(255, 77, 133, 0.5); transform: translateY(-2px); }
+
+    .btn-secundario {
+        background: var(--grey-btn);
+        color: var(--grey-btn-text);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        transition: left 0.18s ease, top 0.18s ease, transform 0.15s ease;
+    }
+
+    #btn-nao { position: relative; z-index:10; }
+
+    input[type="date"], input[type="time"] {
+        width: 100%;
+        padding: 13px 14px;
+        margin-bottom: 14px;
+        border: 2px solid var(--pink-soft);
+        border-radius: 14px;
+        font-size: 16px;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        color: var(--ink);
+        background: #fff;
+        transition: border-color 0.2s ease;
+    }
+    input[type="date"]:focus, input[type="time"]:focus {
+        outline: none;
+        border-color: var(--pink-main);
+    }
+
+    .grelha-emojis {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 22px;
+        width: 100%;
+    }
+
+    .emoji-item {
+        font-size: clamp(28px, 8vw, 34px);
+        background-color: #f7f3f4;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+        touch-action: manipulation;
+    }
+    .emoji-item:active { transform: scale(0.92); }
+
+    .emoji-item.selecionado {
+        border-color: var(--pink-main);
+        background-color: var(--pink-soft);
+        transform: scale(1.06);
+    }
+
+    .btn-desativado {
+        background: #e4e6ea !important;
+        color: #9aa0a6;
+        cursor: not-allowed;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .resumo {
+        font-size: 17px;
+        color: var(--ink);
+        font-weight: 600;
+        margin-top: 6px;
+        line-height: 1.7;
+    }
+
+    .emojis-finais {
+        font-size: 42px;
+        margin-top: 12px;
+        animation: pulsar 1.6s ease-in-out infinite;
+    }
+    @keyframes pulsar {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .progresso {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 18px;
+    }
+    .progresso span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--pink-soft);
+        transition: background 0.25s ease, transform 0.25s ease;
+    }
+    .progresso span.ativo {
+        background: var(--pink-main);
+        transform: scale(1.25);
+    }
+
+    @media (max-width: 360px) {
+        .caixa { padding: 20px 16px; border-radius: 22px; }
+        .ilustracao-caixa { height: 170px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        * { animation: none !important; transition: none !important; }
+    }
+</style>
+</head>
+<body>
+
+    <div class="brilho">✨</div>
+    <div class="brilho">💫</div>
+
+    <div class="coracao" style="--x:4%;  --tamanho:20px; --duracao:11s; --atraso:0s;   --deriva:20px;">💗</div>
+    <div class="coracao" style="--x:14%; --tamanho:14px; --duracao:9s;  --atraso:1.4s; --deriva:-16px;">🩷</div>
+    <div class="coracao" style="--x:24%; --tamanho:22px; --duracao:13s; --atraso:2.8s; --deriva:18px;">❤️</div>
+    <div class="coracao" style="--x:36%; --tamanho:16px; --duracao:10s; --atraso:0.6s; --deriva:-22px;">💕</div>
+    <div class="coracao" style="--x:48%; --tamanho:24px; --duracao:12s; --atraso:3.6s; --deriva:14px;">💓</div>
+    <div class="coracao" style="--x:58%; --tamanho:15px; --duracao:8.5s;--atraso:2s;   --deriva:-18px;">💗</div>
+    <div class="coracao" style="--x:68%; --tamanho:20px; --duracao:11.5s;--atraso:4.4s;--deriva:22px;">💘</div>
+    <div class="coracao" style="--x:78%; --tamanho:13px; --duracao:9.5s; --atraso:1s;  --deriva:-14px;">🩷</div>
+    <div class="coracao" style="--x:88%; --tamanho:21px; --duracao:12.5s;--atraso:3.2s;--deriva:20px;">❤️</div>
+    <div class="coracao" style="--x:94%; --tamanho:16px; --duracao:10.5s;--atraso:0.2s;--deriva:-20px;">💕</div>
+    <div class="coracao" style="--x:30%; --tamanho:12px; --duracao:9.8s; --atraso:5.2s;--deriva:16px;">💓</div>
+    <div class="coracao" style="--x:82%; --tamanho:14px; --duracao:11.2s;--atraso:2.4s;--deriva:-18px;">💗</div>
+
+    <div id="ecra-1" class="caixa">
+        <div class="ilustracao-caixa" id="ilustracao-feliz">
+            <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                <g fill="var(--pink-main)" opacity="0.75">
+                    <path d="M30 30 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z"/>
+                    <path d="M172 104 l2.5 6 l6 2.5 l-6 2.5 l-2.5 6 l-2.5 -6 l-6 -2.5 l6 -2.5 z"/>
+                </g>
+                <path d="M104 16 L92 52 L102 52 L96 84 L122 44 L108 44 Z" fill="var(--pink-deep)"/>
+                <g fill="none" stroke="var(--pink-deep)" stroke-width="7" stroke-linecap="round">
+                    <circle cx="66" cy="98" r="34"/>
+                    <circle cx="134" cy="98" r="34"/>
+                    <line x1="100" y1="96" x2="100" y2="100"/>
+                    <line x1="32" y1="92" x2="14" y2="84"/>
+                    <line x1="168" y1="92" x2="186" y2="84"/>
+                </g>
+                <g fill="none" stroke="var(--pink-deep)" stroke-width="5" stroke-linecap="round">
+                    <path d="M50 98 Q66 84 82 98"/>
+                    <path d="M118 98 Q134 84 150 98"/>
+                </g>
+            </svg>
+        </div>
+        <div class="ilustracao-caixa" id="ilustracao-triste" style="display:none;">
+            <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                <g fill="#c7d2da">
+                    <ellipse cx="100" cy="26" rx="28" ry="14"/>
+                    <ellipse cx="78" cy="30" rx="16" ry="11"/>
+                    <ellipse cx="124" cy="30" rx="18" ry="12"/>
+                </g>
+                <g stroke="#9db3c4" stroke-width="4" stroke-linecap="round">
+                    <line x1="88" y1="46" x2="83" y2="58"/>
+                    <line x1="104" y1="46" x2="99" y2="58"/>
+                    <line x1="120" y1="46" x2="115" y2="58"/>
+                </g>
+                <g fill="none" stroke="var(--pink-deep)" stroke-width="7" stroke-linecap="round">
+                    <circle cx="66" cy="100" r="34"/>
+                    <circle cx="134" cy="100" r="34"/>
+                    <line x1="100" y1="98" x2="100" y2="102"/>
+                    <line x1="32" y1="94" x2="14" y2="86"/>
+                    <line x1="168" y1="94" x2="186" y2="86"/>
+                </g>
+                <g fill="none" stroke="var(--pink-deep)" stroke-width="5" stroke-linecap="round">
+                    <path d="M50 106 Q66 118 82 106"/>
+                    <path d="M118 106 Q134 118 150 106"/>
+                </g>
+                <path d="M66 132 Q60 144 66 150 Q72 144 66 132 Z" fill="#7fb8e8" opacity="0.85"/>
+            </svg>
+        </div>
+        <h1>Will you go on a date with me? 🥺</h1>
+        <div class="botoes">
+            <button id="btn-nao" class="btn-secundario"
+            onmouseover="fogeBotao()"
+            onclick="return impedirClique(event)"
+            ontouchstart="return impedirClique(event)">No</button>
+            <button class="btn-principal" onclick="irParaEcra(2)">Yes</button>
+        </div>
+    </div>
+
+    <div id="ecra-2" class="caixa">
+        <div class="ilustracao-caixa foto-caixa">
+            <img src="happy-potter-removebg.png" alt="Happy Potter" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="emoji-fallback" style="display:none;">💗</div>
+        </div>
+        <h1>You actually said yes?</h1>
+        <h2>I was so ready for you to say no 😂</h2>
+        <button class="btn-principal" onclick="irParaEcra(3)">Next 💖</button>
+    </div>
+
+    <div id="ecra-3" class="caixa">
+        <div class="progresso">
+            <span class="ativo"></span><span></span><span></span>
+        </div>
+        <h1>When are you free? 📅</h1>
+        <input type="date" id="input-data" required>
+        <input type="time" id="input-hora" required>
+        <button id="btn-data" class="btn-principal" onclick="guardarData()">Select the date</button>
+    </div>
+
+    <div id="ecra-4" class="caixa">
+        <div class="progresso">
+            <span class="ativo"></span><span class="ativo"></span><span></span>
+        </div>
+        <h1>what are we feelin' 🤤</h1>
+        <div class="grelha-emojis">
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'comida', '🍔')">🍔</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'comida', '🍣')">🍣</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'comida', '🍝')">🍝</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'comida', '🌮')">🌮</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'comida', '🍕')">🍕</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'comida', '🥩')">🥩</div>
+        </div>
+        <button id="btn-comida" class="btn-principal btn-desativado" onclick="irParaEcra(5)">Pick one first</button>
+    </div>
+
+    <div id="ecra-5" class="caixa">
+        <div class="progresso">
+            <span class="ativo"></span><span class="ativo"></span><span class="ativo"></span>
+        </div>
+        <h1>what's your vibe? 👻</h1>
+        <div class="grelha-emojis">
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'atividade', '⛳')">⛳</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'atividade', '🚶')">🚶</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'atividade', '🎬')">🎬</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'atividade', '🎠')">🎠</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'atividade', '🎢')">🎢</div>
+            <div class="emoji-item" onclick="selecionarEmoji(this, 'atividade', '🏖️')">🏖️</div>
+        </div>
+        <button id="btn-atividade" class="btn-principal btn-desativado" onclick="finalizar()">Pick one first</button>
+    </div>
+
+    <div id="ecra-6" class="caixa">
+        <div class="ilustracao-caixa">
+            <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                <path d="M62 34 L74 8 L84 40 Z" fill="var(--pink-deep)"/>
+                <path d="M138 34 L126 8 L116 40 Z" fill="var(--pink-deep)"/>
+                <ellipse cx="100" cy="92" rx="46" ry="52" fill="var(--pink-deep)"/>
+                <ellipse cx="100" cy="100" rx="30" ry="36" fill="#fff5f8"/>
+                <ellipse cx="58" cy="104" rx="12" ry="26" fill="var(--pink-deep)" transform="rotate(-15 58 104)"/>
+                <ellipse cx="142" cy="104" rx="12" ry="26" fill="var(--pink-deep)" transform="rotate(15 142 104)"/>
+                <circle cx="80" cy="80" r="16" fill="#fff"/>
+                <circle cx="120" cy="80" r="16" fill="#fff"/>
+                <circle cx="80" cy="80" r="7" fill="var(--ink)"/>
+                <circle cx="120" cy="80" r="7" fill="var(--ink)"/>
+                <path d="M93 96 L107 96 L100 108 Z" fill="#ffb04a"/>
+                <g stroke="#ffb04a" stroke-width="4" stroke-linecap="round">
+                    <path d="M86 142 l-6 10 M86 142 l0 12 M86 142 l6 10" fill="none"/>
+                    <path d="M114 142 l-6 10 M114 142 l0 12 M114 142 l6 10" fill="none"/>
+                </g>
+                <g transform="translate(60 116) rotate(-8)">
+                    <rect x="0" y="0" width="42" height="27" rx="3" fill="#fff" stroke="var(--pink-deep)" stroke-width="2.5"/>
+                    <path d="M0 2 L21 17 L42 2" fill="none" stroke="var(--pink-deep)" stroke-width="2.5"/>
+                    <path d="M21 13 c0,-4 6,-4 6,0 c0,3.5 -6,6 -6,9 c0,-3 -6,-5.5 -6,-9 c0,-4 6,-4 6,0 Z" fill="var(--pink-main)"/>
+                </g>
+            </svg>
+        </div>
+        <h1 style="margin-bottom: 5px;">I got you girl. 💗</h1>
+        <div id="texto-final" class="resumo"></div>
+    </div>
+
+    <script>
+        let dataEscolhida = '';
+        let horaEscolhida = '';
+        let comidaEscolhida = '';
+        let atividadeEscolhida = '';
+
+        function fogeBotao() {
+    const botaoNao = document.getElementById('btn-nao');
+
+    document.getElementById('ilustracao-feliz').style.display = 'none';
+    document.getElementById('ilustracao-triste').style.display = 'flex';
+
+    if (botaoNao.style.position !== 'fixed') {
+        const rect = botaoNao.getBoundingClientRect();
+
+        botaoNao.style.width = rect.width + "px";
+        botaoNao.style.height = rect.height + "px";
+        botaoNao.style.position = "fixed";
+        botaoNao.style.left = rect.left + "px";
+        botaoNao.style.top = rect.top + "px";
+        botaoNao.style.zIndex = "10";
+    }
+
+    const margem = 20;
+    const maxX = window.innerWidth - botaoNao.offsetWidth - margem;
+    const maxY = window.innerHeight - botaoNao.offsetHeight - margem;
+
+    let x, y;
+    do {
+        x = Math.random() * maxX;
+        y = Math.random() * maxY;
+    } while (
+        x > (window.innerWidth / 2 - 120) &&
+        x < (window.innerWidth / 2 + 120) &&
+        y > (window.innerHeight / 2 - 80) &&
+        y < (window.innerHeight / 2 + 80)
+    );
+
+    botaoNao.style.left = x + "px";
+    botaoNao.style.top = y + "px";
+}
+
+function impedirClique(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            fogeBotao();
+            return false;
+        }
+
+        function irParaEcra(numero) {
+            document.querySelectorAll('.caixa').forEach(caixa => {
+                caixa.style.display = 'none';
+            });
+            const proxima = document.getElementById('ecra-' + numero);
+            proxima.style.display = 'flex';
+            proxima.style.animation = 'none';
+            void proxima.offsetWidth; // reinicia a animação
+            proxima.style.animation = 'entrar 0.45s cubic-bezier(.22,1,.36,1)';
+        }
+
+        function guardarData() {
+            dataEscolhida = document.getElementById('input-data').value;
+            horaEscolhida = document.getElementById('input-hora').value;
+
+            if (!dataEscolhida || !horaEscolhida) {
+                alert("Please, pick a date and time! 😊");
+                return;
+            }
+            irParaEcra(4);
+        }
+
+        function selecionarEmoji(elemento, tipo, emoji) {
+            const grelha = elemento.parentElement;
+            grelha.querySelectorAll('.emoji-item').forEach(item => {
+                item.classList.remove('selecionado');
+            });
+            elemento.classList.add('selecionado');
+
+            if (tipo === 'comida') {
+                comidaEscolhida = emoji;
+                const btn = document.getElementById('btn-comida');
+                btn.classList.remove('btn-desativado');
+                btn.innerText = 'mmmm, sounds yummy!';
+            } else {
+                atividadeEscolhida = emoji;
+                const btn = document.getElementById('btn-atividade');
+                btn.classList.remove('btn-desativado');
+                btn.innerText = 'sounds like a plan!';
+            }
+        }
+
+        function finalizar() {
+            if (!atividadeEscolhida) return;
+
+            const partesData = dataEscolhida.split('-');
+            const dataFormatada = partesData[2] + '/' + partesData[1] + '/' + partesData[0];
+
+            const textoFinal = `
+                Be ready for ${horaEscolhida}, I'm coming to get you 🚗<br><br>
+                🗓️ ${dataFormatada}<br>
+                ⏰ ${horaEscolhida}<br>
+                <div class="emojis-finais">${comidaEscolhida} ${atividadeEscolhida}</div>
+            `;
+
+            document.getElementById('texto-final').innerHTML = textoFinal;
+            irParaEcra(6);
+        }
+    </script>
+</body>
+</html>
