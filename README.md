@@ -1,6 +1,6 @@
 <div align="center">
 
-# 💖 ConviteMonics
+# 💖 Convite Monica
 
 ### An interactive and cute date invitation made with HTML, CSS and JavaScript
 
@@ -12,7 +12,7 @@
 
 ### ❤️ Live Demo
 
-👉 **https://1computadorcasa1.github.io/convitemonics/**
+👉 **https://1computadorcasa1.github.io/convitemonics/index.html**
 
 </div>
 
